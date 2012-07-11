@@ -2,15 +2,15 @@ package about.monads.scala
 
 import java.util.Scanner
 
-/**
- * Accepts expressions such as:
- *
- *   <expression> ::= "(" <expression> <operator> <expression> ")" | <number>
- *   <operator>   ::= "+" | "-" | "*" | "/"
- *   <number>     ::= ...
- */
-object ExpressionAcceptor {
+object Parser {
 
+  /**
+   * Accepts expressions such as:
+   *
+   *   <expression> ::= "(" <expression> <operator> <expression> ")" | <number>
+   *   <operator>   ::= "+" | "-" | "*" | "/"
+   *   <number>     ::= ...
+   */
   def expr(value: Option[String], tokens: List[String]): Step = {
     val input = Accept(value, tokens)
     val step = input >>= open >>= expr >>= operator >>= expr >>= close

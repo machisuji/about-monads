@@ -2,15 +2,15 @@ package about.monads.java;
 
 import java.util.*;
 
-/**
- * Accepts expressions such as:
- *
- *   <expression> ::= "(" <expression> <operator> <expression> ")" | <number>
- *   <operator>   ::= "+" | "-" | "*" | "/"
- *   <number>     ::= ...
- */
-public class ExpressionAcceptor {
+public class Parser {
 
+	/**
+ 	 * Accepts expressions such as:
+ 	 *
+ 	 *   <expression> ::= "(" <expression> <operator> <expression> ")" | <number>
+ 	 *   <operator>   ::= "+" | "-" | "*" | "/"
+ 	 *   <number>     ::= ...
+ 	 */
 	public static Result expr(LinkedList<String> tokens) {
 		Result open = open(tokens);
 		if (open.isSuccess()) {
