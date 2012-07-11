@@ -13,9 +13,9 @@ object Parser {
    */
   def expr(value: Option[String], tokens: List[String]): Step = {
     val input = Accept(value, tokens)
-    val step = input >>= open >>= expr >>= operator >>= expr >>= close
+    val expression = input >>= open >>= expr >>= operator >>= expr >>= close
     
-    (step >>= calculate) orElse (input >>= number)
+    (expression >>= calculate) orElse (input >>= number)
   }
 
 	def number(value: Option[String], tokens: List[String]): Step = tokens match {
