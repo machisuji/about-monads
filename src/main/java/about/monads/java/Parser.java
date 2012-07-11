@@ -88,8 +88,7 @@ public class Parser {
 			return new Error("Expected (, got EOI");
 		}
 		if (token.equals("(")) {
-			tokens.poll();
-			return new Success(null);
+			return new Success(tokens.poll());
 		} else {
 			return new Error("Expected (, got " + token);
 		}
@@ -101,8 +100,7 @@ public class Parser {
 			return new Error("Expected ), got EOI");
 		}
 		if (token.equals(")")) {
-			tokens.poll();
-			return new Success(null);
+			return new Success(tokens.poll());
 		} else {
 			return new Error("Expected ), got " + token);
 		}
