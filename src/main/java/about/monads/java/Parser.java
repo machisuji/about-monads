@@ -12,14 +12,18 @@ public class Parser {
  	 *   <number>     ::= ...
  	 */
 	public static String expr(LinkedList<String> tokens) throws ParseException {
+		LinkedList<String> tokenz = (LinkedList<String>) tokens.clone();
 		try {
-			open(tokens);
-			String exp1 = expr(tokens);
-			String op = operator(tokens);
-			String exp2 = expr(tokens);
-			close(tokens);
+			open(tokenz);
+			String exp1 = expr(tokenz);
+			String op = operator(tokenz);
+			String exp2 = expr(tokenz);
+			close(tokenz);
 
-			return calculate(exp1, op, exp2);
+			String result = calculate(exp1, op, exp2);
+			tokens.retainAll(tokenz);
+
+			return result;
 		} catch (ParseException e) {
 			return number(tokens); // doesn't work, need to rollback tokens first!
 		}
@@ -65,7 +69,7 @@ public class Parser {
 	public static String close(LinkedList<String> tokens) throws ParseException {
 		String token = tokens.peek();
 		if (token == null) {
-			throw new ParseExcpetion("Expected ), got EOI");
+			throw new ParseException("Expected ), got EOI");
 		}
 		if (token.equals(")")) {
 			return tokens.poll();
