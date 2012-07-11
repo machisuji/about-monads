@@ -11,100 +11,87 @@ public class Parser {
  	 *   <operator>   ::= "+" | "-" | "*" | "/"
  	 *   <number>     ::= ...
  	 */
-	public static Result expr(LinkedList<String> tokens) {
-		Result open = open(tokens);
-		if (open.isSuccess()) {
-			Result exp1 = expr(tokens);
-			if (exp1.isSuccess()) {
-				Result op = operator(tokens);
-				if (op.isSuccess()) {
-					Result exp2 = expr(tokens);
-					if (exp2.isSuccess()) {
-						Result close = close(tokens);
-						if (close.isSuccess()) {
-							int a = new Scanner(exp1.getValue()).nextInt();
-							int b = new Scanner(exp2.getValue()).nextInt();
-							int c = 0;
-							if (op.getValue().equals("+")) {
-								c = a + b;
-							} else if (op.getValue().equals("-")) {
-								c = a - b;
-							} else if (op.getValue().equals("*")) {
-								c = a * b;
-							} else if (op.getValue().equals("/")) {
-								c = a / b;
-							}
-							return new Success("" + c);
-						} else {
-							return close;
-						}
-					} else {
-						return exp2;
-					}
-				} else {
-					return op;
-				}
-			} else {
-				return exp1;
-			}
-		} else {
-			Result number = number(tokens);
-			if (number.isSuccess()) {
-				return number;
-			} else {
-				return open;
-			}
+	public static String expr(LinkedList<String> tokens) throws ParseException {
+		try {
+			open(tokens);
+			String exp1 = expr(tokens);
+			String op = operator(tokens);
+			String exp2 = expr(tokens);
+			close(tokens);
+
+			return calculate(exp1, op, exp2);
+		} catch (ParseException e) {
+			return number(tokens); // doesn't work, need to rollback tokens first!
 		}
 	}
 
-	public static Result number(LinkedList<String> tokens) {
+	public static String number(LinkedList<String> tokens) throws ParseException {
 		String token = tokens.peek();
 		if (token == null) {
-			return new Error("Expected number, got EOI");
+			throw new ParseException("Expected number, got EOI");
 		}
 		Scanner scanner = new Scanner(token);
 		if (scanner.hasNextInt()) {
-			return new Success(tokens.poll());
+			return tokens.poll();
 		} else {
-			return new Error("Expected number, got " + tokens.peek());
+			throw new ParseException("Expected number, got " + tokens.peek());
 		}
 	}
 
-	public static Result operator(LinkedList<String> tokens) {
+	public static String operator(LinkedList<String> tokens) throws ParseException {
 		String token = tokens.peek();
 		if (token == null) {
-			return new Error("Expected operator, got EOI");
+			throw new ParseException("Expected operator, got EOI");
 		}
 		if (token.length() == 1 && "+-*/".contains(token)) {
-			return new Success(tokens.poll());
+			return tokens.poll();
 		} else {
-			return new Error("Expected operator, got " + token);
+			throw new ParseException("Expected operator, got " + token);
 		}
 	}
 
-	public static Result open(LinkedList<String> tokens) {
+	public static String open(LinkedList<String> tokens) throws ParseException {
 		String token = tokens.peek();
 		if (token == null) {
-			return new Error("Expected (, got EOI");
+			throw new ParseException("Expected (, got EOI");
 		}
 		if (token.equals("(")) {
-			tokens.poll();
-			return new Success(null);
+			return tokens.poll();
 		} else {
-			return new Error("Expected (, got " + token);
+			throw new ParseException("Expected (, got " + token);
 		}
 	}
 
-	public static Result close(LinkedList<String> tokens) {
+	public static String close(LinkedList<String> tokens) throws ParseException {
 		String token = tokens.peek();
 		if (token == null) {
-			return new Error("Expected ), got EOI");
+			throw new ParseExcpetion("Expected ), got EOI");
 		}
 		if (token.equals(")")) {
-			tokens.poll();
-			return new Success(null);
+			return tokens.poll();
 		} else {
-			return new Error("Expected ), got " + token);
+			throw new ParseException("Expected ), got " + token);
+		}
+	}
+
+	public static String calculate(String exp1, String op, String exp2) throws ParseException {
+		int a = new Scanner(exp1).nextInt();
+		int b = new Scanner(exp2).nextInt();
+		Integer result = null;
+		
+		if (op.equals("+")) {
+			result = a + b;
+		} else if (op.equals("-")) {
+			result = a - b;
+		} else if (op.equals("*")) {
+			result = a * b;
+		} else if (op.equals("/")) {
+			result = a / b;
+		}
+		if (result != null) {
+			return result.toString();
+		} else {
+			throw new ParseException("Unknown operator: " + op);
 		}
 	}
 
@@ -118,5 +105,11 @@ public class Parser {
 			}
 		}
 		return tokens;
+	}
+}
+
+class ParseException extends Exception {
+	public ParseException(String message) {
+		super(message);
 	}
 }
