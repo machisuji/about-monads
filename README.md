@@ -6,7 +6,7 @@ You can find the second Java implementation in the "if-else" branch.
 
 Punch this into your repl:
 
-    import about.monads.scala.Parser_
+    import about.monads.scala.Parser._
     
     val input = Step("(5 + 9)")
     input >>= expr
