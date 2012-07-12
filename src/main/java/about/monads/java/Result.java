@@ -1,8 +1,8 @@
 package about.monads.java;
 
 /**
- * Parse Result which would carry additional information
- * in a more complex example.
+ * Parse Result which would carry more complex information
+ * such as an AST in a more complex example.
  */
 public interface Result {
 	String getMessage();
