@@ -12,18 +12,18 @@ public class Parser {
  	 *   <number>     ::= ...
  	 */
 	public static String expr(LinkedList<String> tokens) throws ParseException {
-		LinkedList<String> tokenz = (LinkedList<String>) tokens.clone();
+		LinkedList<String> tokensCopy = (LinkedList<String>) tokens.clone();
 		try {
-			open(tokenz);
-			String exp1 = expr(tokenz);
-			String op = operator(tokenz);
-			String exp2 = expr(tokenz);
-			close(tokenz);
+			open(tokensCopy);
+			String exp1 = expr(tokensCopy);
+			String op = operator(tokensCopy);
+			String exp2 = expr(tokensCopy);
+			close(tokensCopy);
 
 			String result = calculate(exp1, op, exp2);
 
 			// consume all used tokens from the original list
-			int diff = tokens.size() - tokenz.size();
+			int diff = tokens.size() - tokensCopy.size();
 			for (int i = 0; i < diff; ++i) {
 				tokens.poll();
 			}
