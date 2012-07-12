@@ -43,16 +43,17 @@ object Parser {
   }
 
   def calculate(value: Option[String], tokens: List[String]): Step = {
-    val Op = """(\d+) ([\+\-\*\/]) (\d+)""".r
+    val Op = """(.* )?(\-?\d+) ([\+\-\*\/]) (\-?\d+)$""".r
     val result = value match {
-      case Some(Op(a, op, b)) => {
+      case Some(Op(prefix, a, op, b)) => {
         val fun: (Int, Int) => Int = op match {
           case "+" => _ + _
           case "-" => _ - _
           case "*" => _ * _
           case "/" => _ / _
         }
-        Some(Seq(a, b).map(_.toInt).reduce(fun).toString)
+        val result = Seq(a, b).map(_.toInt).reduce(fun).toString
+        Some(if (prefix ne null) prefix + result else result)
       }
       case _ => None
     }
