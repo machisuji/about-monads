@@ -4,6 +4,7 @@ There are three implementations of a simple parser for mathmatical expressions s
 Two Java implementations, one based on Exceptions, motivate the usage of a monad in the Scala implementation.
 
 Punch this into your repl:
+
     import about.monads.scala.Parser_
     
     val input = Step("(5 + 9)")
