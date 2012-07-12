@@ -18,7 +18,7 @@ object Parser {
     (expression >>= calculate) orElse (input >>= number)
   }
 
-	def number(value: Option[String], tokens: List[String]): Step = tokens match {
+  def number(value: Option[String], tokens: List[String]): Step = tokens match {
     case token::rest if new Scanner(token).hasNextInt =>
       Accept(value.map(_ + token) orElse Some(token), rest)
     case _ =>
