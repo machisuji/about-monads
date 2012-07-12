@@ -2,6 +2,7 @@ A little example for one use case of monads used in The Functional Club meeting 
 
 There are three implementations of a simple parser for mathmatical expressions such as (5 + 9).
 Two Java implementations, one based on Exceptions, motivate the usage of a monad in the Scala implementation.
+You can find the second Java implementation in the "if-else" branch.
 
 Punch this into your repl:
 
