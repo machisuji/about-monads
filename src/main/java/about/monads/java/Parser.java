@@ -30,7 +30,7 @@ public class Parser {
 
 			return result;
 		} catch (ParseException e) {
-			return number(tokens); // doesn't work, need to rollback tokens first!
+			return number(tokens);
 		}
 	}
 
