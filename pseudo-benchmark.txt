@@ -1,0 +1,5 @@
+Pseudo Benchmark for parsing the expression (((42 * 8) / 3) + (8 - 99))
+
+Java Exception-based: 5ms
+Java If-Else-based:   3ms
+Scala Monad-based:    3ms
