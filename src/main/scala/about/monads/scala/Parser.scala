@@ -33,12 +33,12 @@ object Parser {
   }
 
   def open(value: Option[String], tokens: List[String]): Step = tokens match {
-    case token::rest if token == "(" => Accept(value, rest)
+    case "("::rest => Accept(value, rest)
     case _ => Reject("Expected \"(\", got: " + tokens.headOption.mkString, tokens)
   }
 
   def close(value: Option[String], tokens: List[String]): Step = tokens match {
-    case token::rest if token == ")" => Accept(value, rest)
+    case ")"::rest => Accept(value, rest)
     case _ => Reject("Expected \")\", got: " + tokens.headOption.mkString, tokens)
   }
 
